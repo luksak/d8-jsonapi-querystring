@@ -36,17 +36,11 @@
  * @param {object} queryParams as an object.
  */
 
-function buildQueryString (object, stackedPath = '', stringsParts = []) {
-  Object.keys(object).forEach(key => {
-    const propertySyntax = stackedPath ? `[${encodeURI(key)}]` : key
-    if (Object.getPrototypeOf(object[key]) === Object.prototype) {
-      buildQueryString(object[key], stackedPath + propertySyntax, stringsParts)
-    }
-    else {
-      stringsParts.push(stackedPath + propertySyntax + '=' + encodeURI(object[key]))
-    }
-  })
-  return stringsParts.join("&")
+const qs = require('qs');
+
+function buildQueryString (object) {
+  const query = qs.stringify(object, { indices: false });
+  return query
 }
 
 module.exports.buildQueryString = buildQueryString
